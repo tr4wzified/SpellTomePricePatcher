@@ -6,29 +6,28 @@ using Mutagen.Bethesda.Synthesis;
 using Mutagen.Bethesda.Skyrim;
 using Mutagen.Bethesda.FormKeys.SkyrimSE;
 using Newtonsoft.Json.Linq;
-using Alphaleonis.Win32.Filesystem;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace SpellTomePriceFixPatcher
 {
     public class Program
     {
-        public static int Main(string[] args)
+        public static Task<int> Main(string[] args)
         {
-            return SynthesisPipeline.Instance.Patch<ISkyrimMod, ISkyrimModGetter>(
-                args: args,
-                patcher: RunPatch,
-                new UserPreferences()
+            return SynthesisPipeline.Instance
+                .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
+                .Run(args, new RunPreferences()
                 {
                     ActionsForEmptyArgs = new RunDefaultPatcher()
                     {
                         IdentifyingModKey = "SpellTomePriceFixPatcher.esp",
                         TargetRelease = GameRelease.SkyrimSE
                     }
-                }
-);
+                });
         }
 
-        public static void RunPatch(SynthesisState<ISkyrimMod, ISkyrimModGetter> state)
+        public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             float valueMultiplier = 1;
             var jsonPath = Path.Combine(state.ExtraSettingsDataPath, "settings.json");
@@ -49,7 +48,6 @@ namespace SpellTomePriceFixPatcher
                 }
                 else continue;
             }
-            //Your code here!
         }
     }
 }
