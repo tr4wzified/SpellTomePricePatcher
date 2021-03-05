@@ -22,6 +22,7 @@ namespace SpellTomePriceFixPatcher
                     ActionsForEmptyArgs = new RunDefaultPatcher()
                     {
                         IdentifyingModKey = "SpellTomePriceFixPatcher.esp",
+                        BlockAutomaticExit = true,
                         TargetRelease = GameRelease.SkyrimSE
                     }
                 });
