@@ -44,7 +44,8 @@ namespace SpellTomePriceFixPatcher
                 if (book.Keywords != null && book.Keywords.Contains(Skyrim.Keyword.VendorItemSpellTome)) {
                     Book bookToModify = book.DeepCopy();
                     bookToModify.Value = (uint)(bookToModify.Value * valueMultiplier);
-                    state.PatchMod.Books.Add(bookToModify);
+                    if (book.Value != bookToModify.Value)
+                        state.PatchMod.Books.Add(bookToModify);
                 }
                 else continue;
             }
