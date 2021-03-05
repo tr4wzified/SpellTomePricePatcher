@@ -46,7 +46,7 @@ namespace SpellTomePriceFixPatcher
                     Book bookToModify = book.DeepCopy();
                     bookToModify.Value = (uint)(bookToModify.Value * valueMultiplier);
                     if (book.Value != bookToModify.Value)
-                        state.PatchMod.Books.Add(bookToModify);
+                        state.PatchMod.Books.Set(bookToModify);
                 }
                 else continue;
             }
