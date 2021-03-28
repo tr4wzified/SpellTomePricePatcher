@@ -16,19 +16,21 @@ namespace SpellTomePriceFixPatcher
         public static Task<int> Main(string[] args)
         {
             return SynthesisPipeline.Instance
-                .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
-                .SetTypicalOpen(GameRelease.SkyrimSE, "SpellTomePriceFixPatcher.esp")
-                .Run(args);
+            .AddPatch<ISkyrimMod, ISkyrimModGetter>(RunPatch)
+            .SetTypicalOpen(GameRelease.SkyrimSE, "SpellTomePriceFixPatcher.esp")
+            .Run(args);
         }
 
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
             float valueMultiplier = 1;
+
             var jsonPath = Path.Combine(state.ExtraSettingsDataPath, "settings.json");
             JObject json = JObject.Parse(File.ReadAllText(jsonPath));
             if (json != null && json["value_multiplier"] != null)
                 valueMultiplier = (float)json["value_multiplier"]!;
             else throw new Exception("value_multiplier not found in settings.json! Please try to use the original json instead.");
+
             Console.WriteLine("*** DETECTED SETTINGS ***");
             Console.WriteLine("value_multiplier: " + valueMultiplier);
             Console.WriteLine("*************************");
