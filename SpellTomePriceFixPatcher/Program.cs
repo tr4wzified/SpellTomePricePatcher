@@ -14,7 +14,7 @@ namespace SpellTomePriceFixPatcher
 {
     public static class Program
     {
-        public static Lazy<Settings> _settings;
+        public static Lazy<Settings>? _settings;
         public static Task<int> Main(string[] args)
         {
             return SynthesisPipeline.Instance
@@ -26,7 +26,7 @@ namespace SpellTomePriceFixPatcher
 
         public static void RunPatch(IPatcherState<ISkyrimMod, ISkyrimModGetter> state)
         {
-            float valueMultiplier = _settings.Value.ValueMultiplier;
+            float valueMultiplier = _settings != null ? _settings.Value.ValueMultiplier : 1.0f;
 
             Console.WriteLine("*** DETECTED SETTINGS ***");
             Console.WriteLine("value_multiplier: " + valueMultiplier);
